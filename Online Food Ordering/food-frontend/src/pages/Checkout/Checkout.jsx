@@ -1,30 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-  TextField,
-  Paper,
-  Divider,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Avatar,
-} from '@mui/material';
-import {
-  ArrowBack,
-  CreditCard,
-  AccountBalanceWallet,
-  MonetizationOn,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { getCart } from '../../redux/cartSlice';
 import { createOrder } from '../../redux/orderSlice';
 import toast from 'react-hot-toast';
@@ -88,293 +65,220 @@ const Checkout = () => {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Container maxWidth="sm">
-          <Paper className="p-8 rounded-2xl shadow-custom text-center">
-            <Typography variant="h5" className="font-display font-semibold mb-4 text-gray-800">
-              Your cart is empty
-            </Typography>
-            <Button
-              onClick={() => navigate('/restaurants')}
-              variant="contained"
-              className="bg-primary-500 hover:bg-primary-600 rounded-lg"
-            >
-              Browse Restaurants
-            </Button>
-          </Paper>
-        </Container>
+        <div className="max-w-md w-full mx-auto p-8 rounded-2xl shadow-lg bg-white text-center">
+          <div className="font-display font-semibold mb-4 text-gray-800 text-2xl">Your cart is empty</div>
+          <button
+            onClick={() => navigate('/restaurants')}
+            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-6 py-2 font-semibold"
+          >
+            Browse Restaurants
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <Container maxWidth="lg">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <Box className="mb-8">
-          <Box className="flex items-center gap-4 mb-4">
-            <Button
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <button
               onClick={() => navigate(-1)}
-              startIcon={<ArrowBack />}
-              className="bg-white shadow-md rounded-lg px-4"
+              className="bg-white shadow-md rounded-lg px-4 py-2 flex items-center gap-2"
+              title="Back"
             >
-              Back
-            </Button>
-            <Typography
-              variant="h3"
-              className="font-display font-bold text-gray-800"
-            >
-              <span className="text-gradient">Checkout</span>
-            </Typography>
-          </Box>
-        </Box>
+              <span className="text-xl">←</span> Back
+            </button>
+            <h2 className="font-display font-bold text-gray-800 text-3xl md:text-4xl">
+              <span className="text-yellow-400">Checkout</span>
+            </h2>
+          </div>
+        </div>
 
-        <Grid container spacing={4}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Order Details & Address */}
-          <Grid item xs={12} lg={8}>
+          <div className="lg:col-span-2">
             {/* Delivery Address */}
-            <Paper className="rounded-2xl shadow-custom p-6 mb-6">
-              <Typography variant="h5" className="font-display font-semibold mb-6 text-gray-800">
-                Delivery Address
-              </Typography>
-              
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Street Address"
+            <div className="rounded-2xl shadow-lg bg-white p-6 mb-6">
+              <div className="font-display font-semibold mb-6 text-gray-800 text-xl">Delivery Address</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="block text-gray-700 font-medium mb-1">Street Address<span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
                     name="streetAddress"
                     value={deliveryAddress.streetAddress}
                     onChange={handleAddressChange}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
+                    className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                     required
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="City"
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">City<span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
                     name="city"
                     value={deliveryAddress.city}
                     onChange={handleAddressChange}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
+                    className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                     required
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="State/Province"
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">State/Province</label>
+                  <input
+                    type="text"
                     name="stateProvince"
                     value={deliveryAddress.stateProvince}
                     onChange={handleAddressChange}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
+                    className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Postal Code"
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Postal Code</label>
+                  <input
+                    type="text"
                     name="postalCode"
                     value={deliveryAddress.postalCode}
                     onChange={handleAddressChange}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
+                    className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Country"
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Country</label>
+                  <input
+                    type="text"
                     name="country"
                     value={deliveryAddress.country}
                     onChange={handleAddressChange}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
+                    className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                   />
-                </Grid>
-              </Grid>
-            </Paper>
+                </div>
+              </div>
+            </div>
 
             {/* Payment Method */}
-            <Paper className="rounded-2xl shadow-custom p-6">
-              <Typography variant="h5" className="font-display font-semibold mb-6 text-gray-800">
-                Payment Method
-              </Typography>
-              
-              <FormControl component="fieldset">
-                <RadioGroup
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="space-y-3"
-                >
-                  <FormControlLabel
+            <div className="rounded-2xl shadow-lg bg-white p-6">
+              <div className="font-display font-semibold mb-6 text-gray-800 text-xl">Payment Method</div>
+              <div className="space-y-3">
+                <label className={`flex items-center gap-3 border rounded-lg p-3 cursor-pointer ${paymentMethod === 'card' ? 'ring-2 ring-yellow-400' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
                     value="card"
-                    control={<Radio />}
-                    label={
-                      <Box className="flex items-center gap-3">
-                        <CreditCard className="text-primary-500" />
-                        <Box>
-                          <Typography variant="body1" className="font-semibold">
-                            Credit/Debit Card
-                          </Typography>
-                          <Typography variant="body2" className="text-gray-600">
-                            Pay securely with your card
-                          </Typography>
-                        </Box>
-                      </Box>
-                    }
-                    className="border rounded-lg p-3 m-0"
+                    checked={paymentMethod === 'card'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="accent-yellow-400"
                   />
-                  <FormControlLabel
+                  <span className="text-yellow-500 text-xl">💳</span>
+                  <div>
+                    <div className="font-semibold">Credit/Debit Card</div>
+                    <div className="text-gray-600 text-sm">Pay securely with your card</div>
+                  </div>
+                </label>
+                <label className={`flex items-center gap-3 border rounded-lg p-3 cursor-pointer ${paymentMethod === 'wallet' ? 'ring-2 ring-yellow-400' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
                     value="wallet"
-                    control={<Radio />}
-                    label={
-                      <Box className="flex items-center gap-3">
-                        <AccountBalanceWallet className="text-primary-500" />
-                        <Box>
-                          <Typography variant="body1" className="font-semibold">
-                            Digital Wallet
-                          </Typography>
-                          <Typography variant="body2" className="text-gray-600">
-                            Pay with Paytm, PhonePe, GPay
-                          </Typography>
-                        </Box>
-                      </Box>
-                    }
-                    className="border rounded-lg p-3 m-0"
+                    checked={paymentMethod === 'wallet'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="accent-yellow-400"
                   />
-                  <FormControlLabel
+                  <span className="text-yellow-500 text-xl">👛</span>
+                  <div>
+                    <div className="font-semibold">Digital Wallet</div>
+                    <div className="text-gray-600 text-sm">Pay with Paytm, PhonePe, GPay</div>
+                  </div>
+                </label>
+                <label className={`flex items-center gap-3 border rounded-lg p-3 cursor-pointer ${paymentMethod === 'cod' ? 'ring-2 ring-yellow-400' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
                     value="cod"
-                    control={<Radio />}
-                    label={
-                      <Box className="flex items-center gap-3">
-                        <MonetizationOn className="text-primary-500" />
-                        <Box>
-                          <Typography variant="body1" className="font-semibold">
-                            Cash on Delivery
-                          </Typography>
-                          <Typography variant="body2" className="text-gray-600">
-                            Pay when you receive your order
-                          </Typography>
-                        </Box>
-                      </Box>
-                    }
-                    className="border rounded-lg p-3 m-0"
+                    checked={paymentMethod === 'cod'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="accent-yellow-400"
                   />
-                </RadioGroup>
-              </FormControl>
-            </Paper>
-          </Grid>
+                  <span className="text-yellow-500 text-xl">💵</span>
+                  <div>
+                    <div className="font-semibold">Cash on Delivery</div>
+                    <div className="text-gray-600 text-sm">Pay when you receive your order</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
 
           {/* Order Summary */}
-          <Grid item xs={12} lg={4}>
-            <Paper className="rounded-2xl shadow-custom sticky top-8">
-              <Box className="p-6">
-                <Typography variant="h5" className="font-display font-semibold mb-6 text-gray-800">
-                  Order Summary
-                </Typography>
+          <div>
+            <div className="rounded-2xl shadow-lg bg-white sticky top-8">
+              <div className="p-6">
+                <div className="font-display font-semibold mb-6 text-gray-800 text-xl">Order Summary</div>
 
                 {/* Order Items */}
-                <Box className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6">
                   {items.map((item) => (
-                    <Box key={item.id} className="flex items-center gap-3">
-                      <Avatar
+                    <div key={item.id} className="flex items-center gap-3">
+                      <img
                         src={item.food?.images?.[0] || '/api/placeholder/50/50'}
                         alt={item.food?.name}
-                        sx={{ width: 40, height: 40 }}
-                        className="rounded-lg"
+                        className="rounded-lg w-10 h-10 object-cover"
                       />
-                      <Box className="flex-1">
-                        <Typography variant="body2" className="font-semibold text-gray-800">
-                          {item.food?.name}
-                        </Typography>
-                        <Typography variant="body2" className="text-gray-600">
-                          Qty: {item.quantity}
-                        </Typography>
-                      </Box>
-                      <Typography variant="body2" className="font-semibold">
-                        ₹{(item.food?.price * item.quantity).toFixed(2)}
-                      </Typography>
-                    </Box>
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-800">{item.food?.name}</div>
+                        <div className="text-gray-600 text-sm">Qty: {item.quantity}</div>
+                      </div>
+                      <div className="font-semibold">₹{(item.food?.price * item.quantity).toFixed(2)}</div>
+                    </div>
                   ))}
-                </Box>
+                </div>
 
-                <Divider className="my-4" />
+                <div className="border-t border-gray-200 my-4"></div>
 
                 {/* Price Breakdown */}
-                <Box className="space-y-3 mb-6">
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Subtotal
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹{totalAmount?.toFixed(2)}
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Delivery Fee
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold text-green-600">
-                      Free
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Platform Fee
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹5.00
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      GST (5%)
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹{(totalAmount * 0.05)?.toFixed(2)}
-                    </Typography>
-                  </Box>
-                </Box>
+                <div className="space-y-3 mb-6">
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Subtotal</div>
+                    <div className="font-semibold">₹{totalAmount?.toFixed(2)}</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Delivery Fee</div>
+                    <div className="font-semibold text-green-600">Free</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Platform Fee</div>
+                    <div className="font-semibold">₹5.00</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">GST (5%)</div>
+                    <div className="font-semibold">₹{(totalAmount * 0.05)?.toFixed(2)}</div>
+                  </div>
+                </div>
 
-                <Divider className="my-4" />
+                <div className="flex justify-between mb-6">
+                  <div className="font-bold text-gray-800">Total Amount</div>
+                  <div className="font-bold text-yellow-500">₹{finalAmount?.toFixed(2)}</div>
+                </div>
 
-                <Box className="flex justify-between mb-6">
-                  <Typography variant="h6" className="font-bold text-gray-800">
-                    Total Amount
-                  </Typography>
-                  <Typography variant="h6" className="font-bold text-primary-600">
-                    ₹{finalAmount?.toFixed(2)}
-                  </Typography>
-                </Box>
-
-                <Button
+                <button
                   onClick={handlePlaceOrder}
-                  variant="contained"
-                  fullWidth
-                  size="large"
+                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-xl py-3 font-semibold text-lg shadow-lg disabled:opacity-50"
                   disabled={loading}
-                  className="bg-primary-500 hover:bg-primary-600 rounded-xl py-3 font-semibold text-lg shadow-lg"
                 >
                   {loading ? 'Placing Order...' : 'Place Order'}
-                </Button>
+                </button>
 
-                <Box className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <Typography variant="body2" className="text-green-800 text-center">
-                    🛡️ Your payment is secure and encrypted
-                  </Typography>
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+                <div className="mt-4 p-4 bg-green-50 rounded-lg">
+                  <div className="text-green-800 text-center">🛡️ Your payment is secure and encrypted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

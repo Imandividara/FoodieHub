@@ -1,26 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Chip,
-  Rating,
-  Skeleton,
-} from '@mui/material';
-import {
-  LocalOffer,
-  Schedule,
-  Star,
-  TwoWheeler,
-  Restaurant as RestaurantIcon,
-} from '@mui/icons-material';
+// Removed Material UI imports. Use only Tailwind CSS and React components.
 import { getRestaurants } from '../../redux/restaurantSlice';
 
 const Home = () => {
@@ -32,230 +13,182 @@ const Home = () => {
   }, [dispatch]);
 
   const featuredRestaurants = restaurants?.slice(0, 6) || [];
+  // Icon SVGs for features
+  const icons = {
+    delivery: (
+      <svg className="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5A1.5 1.5 0 106 21a1.5 1.5 0 00-1.5-1.5zm13.5 0A1.5 1.5 0 1121 21a1.5 1.5 0 01-3 0zm-13.5 0V5.25A2.25 2.25 0 016.75 3h7.5A2.25 2.25 0 0116.5 5.25v14.25m-12 0h12m0 0h2.25A2.25 2.25 0 0021 17.25V12.75a2.25 2.25 0 00-2.25-2.25H16.5" /></svg>
+    ),
+    restaurant: (
+      <svg className="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 21v-7.5m0 0A2.25 2.25 0 016.75 11.25h10.5A2.25 2.25 0 0119.5 13.5v7.5m-15 0h15" /></svg>
+    ),
+    offer: (
+      <svg className="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1.5m0 15V21m8.25-8.25H21m-18 0H3m15.364-6.364l1.061 1.061M4.575 19.425l1.061-1.061m12.728 0l-1.061-1.061M4.575 4.575l1.061 1.061" /></svg>
+    ),
+    clock: (
+      <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" /></svg>
+    ),
+    star: (
+      <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.388-2.46a1 1 0 00-1.176 0l-3.388 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.388-2.46c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" /></svg>
+    ),
+  };
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <Box className="relative bg-secondary-400 text-white py-20 overflow-hidden">
+      <div className="relative bg-yellow-400 text-white py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <Container maxWidth="lg" className="relative z-10">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Typography
-                variant="h2"
-                className="font-display font-bold mb-6 text-white animate-fade-in"
-                sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' } }}
-              >
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1">
+              <h1 className="font-display font-bold mb-6 text-white animate-fade-in text-4xl md:text-5xl">
                 Delicious Food
                 <br />
                 <span className="text-yellow-300">Delivered Fast</span>
-              </Typography>
-              <Typography
-                variant="h6"
-                className="mb-20 text-gray-100 leading-relaxed animate-slide-up"
-              >
-                Discover amazing restaurants near you and get your favorite meals delivered 
-                in under 30 minutes. Fresh, hot, and ready to enjoy!
-              </Typography>
-              <Box className="flex flex-col sm:flex-row gap-4 animate-slide-up mt-5">
-                <Button
-                  component={Link}
-                  to="/restaurants"
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    backgroundColor: '#facc15', // Tailwind yellow-400
-                    color: '#111827',            // Tailwind gray-900
-                    '&:hover': { backgroundColor: '#eab308' }, // Tailwind yellow-500
-                  }}
-                  className="rounded-full px-8 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all"
-                >
+              </h1>
+              <p className="mb-8 text-gray-100 leading-relaxed animate-slide-up text-lg">
+                Discover amazing restaurants near you and get your favorite meals delivered in under 30 minutes. Fresh, hot, and ready to enjoy!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 animate-slide-up mt-5">
+                <Link to="/restaurants" className="rounded-full px-8 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all bg-yellow-400 text-gray-900 text-center">
                   Order Now
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  className="border-white text-white hover:bg-white hover:text-primary-600 rounded-full px-8 py-3 font-semibold transition-all"
-                >
+                </Link>
+                <button className="border border-white text-white hover:bg-white hover:text-yellow-500 rounded-full px-8 py-3 font-semibold transition-all">
                   Learn More
-                </Button>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box className="relative animate-bounce-slow">
-                <img
-                  src="/assets/food.jpg"
-                  alt="Food delivery"
-                  className="w-full h-auto rounded-2xl shadow-2xl"
-                  style={{ maxWidth: '400px', height: 'auto' }}
-                />
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 flex justify-center animate-bounce-slow">
+              <img
+                src="/assets/food.jpg"
+                alt="Food delivery"
+                className="w-full max-w-md h-auto rounded-2xl shadow-2xl"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Features Section */}
-      <Container maxWidth="lg" className="py-16">
-        <Typography
-          variant="h3"
-          className="font-display font-bold text-center mb-12 text-gray-800"
-        >
-          Why Choose <span className="text-secondary-400">FoodieHub</span>?
-        </Typography>
-        
-        <Grid container spacing={4}>
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <h2 className="font-display font-bold text-center mb-12 text-gray-800 text-3xl md:text-4xl">
+          Why Choose <span className="text-yellow-400">FoodieHub</span>?
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              icon: <TwoWheeler className="text-primary-500" fontSize="large" />,
+              icon: icons.delivery,
               title: 'Fast Delivery',
               description: 'Get your food delivered in under 30 minutes with our express delivery service.',
             },
             {
-              icon: <RestaurantIcon className="text-primary-500" fontSize="large" />,
+              icon: icons.restaurant,
               title: 'Best Restaurants',
               description: 'Partnered with the finest restaurants in your city to bring you quality meals.',
             },
             {
-              icon: <LocalOffer className="text-primary-500" fontSize="large" />,
+              icon: icons.offer,
               title: 'Great Deals',
               description: 'Enjoy amazing discounts and offers on your favorite restaurants.',
             },
           ].map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Card className="h-full hover-scale shadow-custom border-0 rounded-2xl p-6">
-                <CardContent className="text-center">
-                  <Box className="mb-4 flex justify-center">
-                    <Box className="p-4 bg-primary-50 rounded-full">
-                      {feature.icon}
-                    </Box>
-                  </Box>
-                  <Typography variant="h5" className="font-display font-semibold mb-3 text-gray-800">
-                    {feature.title}
-                  </Typography>
-                  <Typography variant="body1" className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <div key={index} className="h-full hover:scale-105 transition-transform shadow-lg border-0 rounded-2xl p-8 bg-white text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="p-4 bg-primary-50 rounded-full flex items-center justify-center">
+                  {feature.icon}
+                </div>
+              </div>
+              <h3 className="font-display font-semibold mb-3 text-gray-800 text-xl">
+                {feature.title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
           ))}
-        </Grid>
-      </Container>
+        </div>
+      </div>
 
       {/* Featured Restaurants Section */}
-      <Box className="bg-gray-50 py-16">
-        <Container maxWidth="lg">
-          <Box className="flex justify-between items-center mb-8">
-            <Typography
-              variant="h3"
-              className="font-display font-bold text-gray-800"
-            >
-              Featured <span className="text-gradient">Restaurants</span>
-            </Typography>
-            <Button
-              component={Link}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+            <h2 className="font-display font-bold text-gray-800 text-3xl md:text-4xl">
+              Featured <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Restaurants</span>
+            </h2>
+            <Link
               to="/restaurants"
-              variant="outlined"
-              className="border-primary-500 text-primary-600 hover:bg-primary-50 rounded-lg px-6"
+              className="border border-yellow-400 text-yellow-500 hover:bg-yellow-50 rounded-lg px-6 py-2 font-semibold transition-all text-center"
             >
               View All
-            </Button>
-          </Box>
-          
-          <Grid container spacing={4}>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {loading
               ? Array.from(new Array(6)).map((_, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Card className="rounded-2xl shadow-custom">
-                      <Skeleton variant="rectangular" height={200} />
-                      <CardContent>
-                        <Skeleton variant="text" height={30} />
-                        <Skeleton variant="text" height={20} width="60%" />
-                        <Skeleton variant="text" height={20} width="80%" />
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                  <div key={index} className="rounded-2xl shadow-lg bg-white animate-pulse">
+                    <div className="h-48 w-full bg-gray-200 rounded-t-2xl" />
+                    <div className="p-6">
+                      <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
+                      <div className="h-4 bg-gray-200 rounded w-1/2 mb-1" />
+                      <div className="h-4 bg-gray-200 rounded w-2/3" />
+                    </div>
+                  </div>
                 ))
               : featuredRestaurants.map((restaurant) => (
-                  <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
-                    <Card className="hover-scale shadow-custom border-0 rounded-2xl overflow-hidden">
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image={restaurant.images?.[0] || '/api/placeholder/300/200'}
-                        alt={restaurant.name}
-                        className="object-cover"
-                      />
-                      <CardContent className="p-6">
-                        <Typography variant="h6" className="font-display font-semibold mb-2 text-gray-800">
-                          {restaurant.name}
-                        </Typography>
-                        <Typography variant="body2" className="text-gray-600 mb-3">
-                          {restaurant.description}
-                        </Typography>
-                        
-                        <Box className="flex items-center gap-2 mb-3">
-                          <Rating value={4.5} precision={0.5} size="small" readOnly />
-                          <Typography variant="body2" className="text-gray-600">
-                            4.5 (120+ reviews)
-                          </Typography>
-                        </Box>
-                        
-                        <Box className="flex items-center justify-between mb-4">
-                          <Box className="flex items-center gap-1 text-gray-600">
-                            <Schedule fontSize="small" />
-                            <Typography variant="body2">
-                              {restaurant.openingHours || '30-45 min'}
-                            </Typography>
-                          </Box>
-                          <Chip
-                            label="Free Delivery"
-                            size="small"
-                            className="bg-green-100 text-green-800"
-                          />
-                        </Box>
-                        
-                        <Button
-                          component={Link}
-                          to={`/restaurant/${restaurant.id}`}
-                          variant="contained"
-                          fullWidth
-                          className="bg-primary-500 hover:bg-primary-600 rounded-lg py-2 font-semibold"
-                        >
-                          View Menu
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                  <div key={restaurant.id} className="hover:scale-105 transition-transform shadow-lg border-0 rounded-2xl overflow-hidden bg-white">
+                    <img
+                      src={restaurant.images?.[0] || '/api/placeholder/300/200'}
+                      alt={restaurant.name}
+                      className="object-cover w-full h-48"
+                    />
+                    <div className="p-6">
+                      <h3 className="font-display font-semibold mb-2 text-gray-800 text-lg">
+                        {restaurant.name}
+                      </h3>
+                      <p className="text-gray-600 mb-3 text-sm">
+                        {restaurant.description}
+                      </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        {icons.star}
+                        <span className="text-gray-600 text-sm">4.5 (120+ reviews)</span>
+                      </div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-1 text-gray-600 text-sm">
+                          {icons.clock}
+                          <span>{restaurant.openingHours || '30-45 min'}</span>
+                        </div>
+                        <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">Free Delivery</span>
+                      </div>
+                      <Link
+                        to={`/restaurant/${restaurant.id}`}
+                        className="bg-yellow-400 hover:bg-yellow-500 rounded-lg py-2 font-semibold w-full block text-center text-gray-900 transition-all"
+                      >
+                        View Menu
+                      </Link>
+                    </div>
+                  </div>
                 ))}
-          </Grid>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </div>
 
       {/* CTA Section */}
-      <Container maxWidth="lg" className="py-16">
-        <Box className="bg-gradient-to-r from-primary-500 to-orange-600 rounded-3xl p-12 text-center text-white">
-          <Typography
-            variant="h3"
-            className="font-display font-bold mb-4"
-          >
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl p-12 text-center text-white">
+          <h2 className="font-display font-bold mb-4 text-3xl md:text-4xl">
             Ready to Order?
-          </Typography>
-          <Typography variant="h6" className="mb-8 text-gray-100">
+          </h2>
+          <p className="mb-8 text-gray-100 text-lg">
             Join thousands of satisfied customers and enjoy delicious meals delivered to your door.
-          </Typography>
-          <Button
-            component={Link}
+          </p>
+          <Link
             to="/restaurants"
-            variant="contained"
-            size="large"
-            className="bg-white text-primary-600 hover:bg-gray-100 rounded-full px-8 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all"
+            className="bg-white text-yellow-500 hover:bg-gray-100 rounded-full px-8 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all inline-block"
           >
             Start Ordering
-          </Button>
-        </Box>
-      </Container>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

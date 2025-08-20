@@ -1,26 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-  IconButton,
-  Divider,
-  Paper,
-  Avatar,
-} from '@mui/material';
-import {
-  Add,
-  Remove,
-  Delete,
-  ShoppingCartOutlined,
-  ArrowBack,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { getCart, updateCartItem, removeCartItem, clearCart } from '../../redux/cartSlice';
 import toast from 'react-hot-toast';
 
@@ -76,25 +57,16 @@ const Cart = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
-        <Container maxWidth="sm">
-          <Paper className="p-8 rounded-2xl shadow-custom text-center">
-            <ShoppingCartOutlined sx={{ fontSize: 64 }} className="text-gray-400 mb-4" />
-            <Typography variant="h5" className="font-display font-semibold mb-4 text-gray-800">
-              Please Sign In
-            </Typography>
-            <Typography variant="body1" className="text-gray-600 mb-6">
-              You need to sign in to view your cart
-            </Typography>
-            <Button
-              component={Link}
-              to="/login"
-              variant="contained"
-              className="bg-primary-500 hover:bg-primary-600 rounded-lg px-6"
-            >
-              Sign In
-            </Button>
-          </Paper>
-        </Container>
+        <div className="max-w-md w-full mx-auto p-8 rounded-2xl shadow-lg bg-white text-center">
+          <div className="flex justify-center mb-4">
+            <span className="text-gray-400 text-6xl">🛒</span>
+          </div>
+          <div className="font-display font-semibold mb-4 text-gray-800 text-2xl">Please Sign In</div>
+          <div className="text-gray-600 mb-6">You need to sign in to view your cart</div>
+          <Link to="/login">
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-6 py-2 font-semibold">Sign In</button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -102,223 +74,158 @@ const Cart = () => {
   if (items.length === 0 && !loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
-        <Container maxWidth="sm">
-          <Paper className="p-8 rounded-2xl shadow-custom text-center">
-            <ShoppingCartOutlined sx={{ fontSize: 64 }} className="text-gray-400 mb-4" />
-            <Typography variant="h5" className="font-display font-semibold mb-4 text-gray-800">
-              Your Cart is Empty
-            </Typography>
-            <Typography variant="body1" className="text-gray-600 mb-6">
-              Start adding some delicious items to your cart
-            </Typography>
-            <Button
-              component={Link}
-              to="/restaurants"
-              variant="contained"
-              className="bg-primary-500 hover:bg-primary-600 rounded-lg px-6"
-            >
-              Browse Restaurants
-            </Button>
-          </Paper>
-        </Container>
+        <div className="max-w-md w-full mx-auto p-8 rounded-2xl shadow-lg bg-white text-center">
+          <div className="flex justify-center mb-4">
+            <span className="text-gray-400 text-6xl">🛒</span>
+          </div>
+          <div className="font-display font-semibold mb-4 text-gray-800 text-2xl">Your Cart is Empty</div>
+          <div className="text-gray-600 mb-6">Start adding some delicious items to your cart</div>
+          <Link to="/restaurants">
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-6 py-2 font-semibold">Browse Restaurants</button>
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <Container maxWidth="lg">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <Box className="mb-8">
-          <Box className="flex items-center gap-4 mb-4">
-            <IconButton
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <button
               onClick={() => navigate(-1)}
-              className="bg-white shadow-md rounded-lg"
+              className="bg-white shadow-md rounded-lg p-2"
+              title="Back"
             >
-              <ArrowBack />
-            </IconButton>
-            <Typography
-              variant="h3"
-              className="font-display font-bold text-gray-800"
-            >
-              Your <span className="text-gradient">Cart</span>
-            </Typography>
-          </Box>
-          <Typography variant="h6" className="text-gray-600">
-            {totalItems} items in your cart
-          </Typography>
-        </Box>
+              <span className="text-2xl">←</span>
+            </button>
+            <h2 className="font-display font-bold text-gray-800 text-3xl md:text-4xl">
+              Your <span className="text-yellow-400">Cart</span>
+            </h2>
+          </div>
+          <div className="text-gray-600 text-lg">{totalItems} items in your cart</div>
+        </div>
 
-        <Grid container spacing={4}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
-          <Grid item xs={12} lg={8}>
-            <Paper className="rounded-2xl shadow-custom">
-              <Box className="p-6">
-                <Box className="flex items-center justify-between mb-6">
-                  <Typography variant="h5" className="font-display font-semibold text-gray-800">
-                    Cart Items
-                  </Typography>
+          <div className="lg:col-span-2">
+            <div className="rounded-2xl shadow-lg bg-white">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="font-display font-semibold text-gray-800 text-xl">Cart Items</div>
                   {items.length > 0 && (
-                    <Button
+                    <button
                       onClick={handleClearCart}
-                      color="error"
-                      variant="outlined"
-                      className="rounded-lg"
+                      className="rounded-lg border border-red-300 text-red-500 px-4 py-2 hover:bg-red-50 font-semibold"
                     >
                       Clear Cart
-                    </Button>
+                    </button>
                   )}
-                </Box>
+                </div>
 
-                <Box className="space-y-4">
+                <div className="space-y-4">
                   {items.map((item) => (
-                    <Card key={item.id} className="border border-gray-200 rounded-xl">
-                      <CardContent className="p-4">
-                        <Grid container spacing={3} alignItems="center">
-                          <Grid item xs={12} sm={2}>
-                            <Avatar
-                              src={item.food?.images?.[0] || '/api/placeholder/80/80'}
-                              alt={item.food?.name}
-                              sx={{ width: 60, height: 60 }}
-                              className="rounded-lg"
-                            />
-                          </Grid>
-                          
-                          <Grid item xs={12} sm={4}>
-                            <Typography variant="h6" className="font-semibold text-gray-800 mb-1">
-                              {item.food?.name}
-                            </Typography>
-                            <Typography variant="body2" className="text-gray-600">
-                              {item.food?.description}
-                            </Typography>
-                            <Typography variant="h6" className="font-bold text-primary-600 mt-2">
-                              ₹{item.food?.price}
-                            </Typography>
-                          </Grid>
-                          
-                          <Grid item xs={12} sm={3}>
-                            <Box className="flex items-center gap-2">
-                              <IconButton
-                                onClick={() => handleUpdateQuantity(item.id, item.quantity, -1)}
-                                className="bg-gray-100 hover:bg-gray-200 rounded-lg"
-                                size="small"
-                              >
-                                <Remove />
-                              </IconButton>
-                              <Typography variant="h6" className="mx-3 font-semibold min-w-[2rem] text-center">
-                                {item.quantity}
-                              </Typography>
-                              <IconButton
-                                onClick={() => handleUpdateQuantity(item.id, item.quantity, 1)}
-                                className="bg-primary-100 hover:bg-primary-200 text-primary-600 rounded-lg"
-                                size="small"
-                              >
-                                <Add />
-                              </IconButton>
-                            </Box>
-                          </Grid>
-                          
-                          <Grid item xs={12} sm={2}>
-                            <Box className="flex items-center justify-between">
-                              <Typography variant="h6" className="font-bold text-gray-800">
-                                ₹{(item.food?.price * item.quantity).toFixed(2)}
-                              </Typography>
-                              <IconButton
-                                onClick={() => handleRemoveItem(item.id)}
-                                color="error"
-                                className="hover:bg-red-50"
-                              >
-                                <Delete />
-                              </IconButton>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </CardContent>
-                    </Card>
+                    <div key={item.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                        <div className="sm:col-span-2 flex justify-center">
+                          <img
+                            src={item.food?.images?.[0] || '/api/placeholder/80/80'}
+                            alt={item.food?.name}
+                            className="rounded-lg w-16 h-16 object-cover"
+                          />
+                        </div>
+                        <div className="sm:col-span-4">
+                          <div className="font-semibold text-gray-800 mb-1">{item.food?.name}</div>
+                          <div className="text-gray-600 text-sm">{item.food?.description}</div>
+                          <div className="font-bold text-yellow-500 mt-2">₹{item.food?.price}</div>
+                        </div>
+                        <div className="sm:col-span-3">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleUpdateQuantity(item.id, item.quantity, -1)}
+                              className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
+                              title="Decrease"
+                            >
+                              <span className="text-xl">−</span>
+                            </button>
+                            <span className="mx-3 font-semibold min-w-[2rem] text-center">{item.quantity}</span>
+                            <button
+                              onClick={() => handleUpdateQuantity(item.id, item.quantity, 1)}
+                              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-lg p-2"
+                              title="Increase"
+                            >
+                              <span className="text-xl">＋</span>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="sm:col-span-2 flex flex-col items-end gap-2">
+                          <div className="font-bold text-gray-800">₹{(item.food?.price * item.quantity).toFixed(2)}</div>
+                          <button
+                            onClick={() => handleRemoveItem(item.id)}
+                            className="hover:bg-red-50 rounded-full p-2"
+                            title="Remove"
+                          >
+                            <span className="text-red-500 text-xl">🗑️</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Order Summary */}
-          <Grid item xs={12} lg={4}>
-            <Paper className="rounded-2xl shadow-custom sticky top-8">
-              <Box className="p-6">
-                <Typography variant="h5" className="font-display font-semibold mb-6 text-gray-800">
-                  Order Summary
-                </Typography>
+          <div>
+            <div className="rounded-2xl shadow-lg bg-white sticky top-8">
+              <div className="p-6">
+                <div className="font-display font-semibold mb-6 text-gray-800 text-xl">Order Summary</div>
 
-                <Box className="space-y-4 mb-6">
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Subtotal ({totalItems} items)
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹{totalAmount?.toFixed(2)}
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Delivery Fee
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold text-green-600">
-                      Free
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      Platform Fee
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹5.00
-                    </Typography>
-                  </Box>
-                  
-                  <Box className="flex justify-between">
-                    <Typography variant="body1" className="text-gray-600">
-                      GST (5%)
-                    </Typography>
-                    <Typography variant="body1" className="font-semibold">
-                      ₹{(totalAmount * 0.05)?.toFixed(2)}
-                    </Typography>
-                  </Box>
-                </Box>
+                <div className="space-y-4 mb-6">
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Subtotal ({totalItems} items)</div>
+                    <div className="font-semibold">₹{totalAmount?.toFixed(2)}</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Delivery Fee</div>
+                    <div className="font-semibold text-green-600">Free</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">Platform Fee</div>
+                    <div className="font-semibold">₹5.00</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="text-gray-600">GST (5%)</div>
+                    <div className="font-semibold">₹{(totalAmount * 0.05)?.toFixed(2)}</div>
+                  </div>
+                </div>
 
-                <Divider className="my-4" />
+                <div className="border-t border-gray-200 my-4"></div>
 
-                <Box className="flex justify-between mb-6">
-                  <Typography variant="h6" className="font-bold text-gray-800">
-                    Total Amount
-                  </Typography>
-                  <Typography variant="h6" className="font-bold text-primary-600">
-                    ₹{(totalAmount + 5 + (totalAmount * 0.05))?.toFixed(2)}
-                  </Typography>
-                </Box>
+                <div className="flex justify-between mb-6">
+                  <div className="font-bold text-gray-800">Total Amount</div>
+                  <div className="font-bold text-yellow-500">₹{(totalAmount + 5 + (totalAmount * 0.05))?.toFixed(2)}</div>
+                </div>
 
-                <Button
+                <button
                   onClick={handleCheckout}
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  className="bg-primary-500 hover:bg-primary-600 rounded-xl py-3 font-semibold text-lg shadow-lg"
+                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-xl py-3 font-semibold text-lg shadow-lg disabled:opacity-50"
                   disabled={items.length === 0}
                 >
                   Proceed to Checkout
-                </Button>
+                </button>
 
-                <Box className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <Typography variant="body2" className="text-green-800 font-semibold">
-                    🎉 Free delivery on this order!
-                  </Typography>
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+                <div className="mt-4 p-4 bg-green-50 rounded-lg">
+                  <div className="text-green-800 font-semibold">🎉 Free delivery on this order!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

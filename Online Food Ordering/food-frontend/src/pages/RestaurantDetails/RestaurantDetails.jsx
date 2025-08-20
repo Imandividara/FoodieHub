@@ -1,30 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Chip,
-  Rating,
-  Skeleton,
-  IconButton,
-  Paper,
-  Tabs,
-  Tab,
-} from '@mui/material';
-import {
-  Schedule,
-  LocationOn,
-  Star,
-  Add,
-  ArrowBack,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { getRestaurantById } from '../../redux/restaurantSlice';
 import { getFoodsByRestaurant } from '../../redux/foodSlice';
 import { addToCart } from '../../redux/cartSlice';
@@ -75,11 +52,11 @@ const RestaurantDetails = () => {
   if (restaurantLoading) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
-        <Container maxWidth="lg">
-          <Skeleton variant="rectangular" height={300} className="rounded-2xl mb-8" />
-          <Skeleton variant="text" height={40} width="60%" className="mb-4" />
-          <Skeleton variant="text" height={20} width="40%" />
-        </Container>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="h-80 bg-gray-200 rounded-2xl mb-8 animate-pulse"></div>
+          <div className="h-10 bg-gray-200 rounded mb-4 w-3/5 animate-pulse"></div>
+          <div className="h-5 bg-gray-200 rounded w-2/5 animate-pulse"></div>
+        </div>
       </div>
     );
   }
@@ -87,9 +64,7 @@ const RestaurantDetails = () => {
   if (!currentRestaurant) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Typography variant="h5" className="text-gray-600">
-          Restaurant not found
-        </Typography>
+        <div className="text-gray-600 text-2xl">Restaurant not found</div>
       </div>
     );
   }
@@ -97,164 +72,129 @@ const RestaurantDetails = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Restaurant Header */}
-      <Box className="relative h-80 bg-gradient-to-r from-primary-500 to-orange-600">
-        <Box className="absolute inset-0 bg-black/30"></Box>
-        <Container maxWidth="lg" className="relative h-full">
-          <Box className="flex items-center h-full text-white">
-            <IconButton
+      <div className="relative h-80 bg-gradient-to-r from-yellow-400 to-orange-500">
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="max-w-7xl mx-auto px-4 relative h-full">
+          <div className="flex items-center h-full text-white">
+            <button
               onClick={() => navigate(-1)}
-              className="bg-white/20 backdrop-blur-sm mr-4"
-              sx={{ color: 'white' }}
+              className="bg-white/20 backdrop-blur-sm mr-4 rounded-full p-2"
+              title="Back"
             >
-              <ArrowBack />
-            </IconButton>
-            <Box>
-              <Typography variant="h3" className="font-display font-bold mb-2">
-                {currentRestaurant.name}
-              </Typography>
-              <Typography variant="h6" className="mb-3 text-gray-100">
-                {currentRestaurant.description}
-              </Typography>
-              <Box className="flex items-center gap-4 mb-4">
-                <Box className="flex items-center gap-1">
-                  <Star className="text-yellow-400" />
-                  <Typography variant="body1" className="font-semibold">
-                    {currentRestaurant.rating || 4.5}
-                  </Typography>
-                </Box>
-                <Box className="flex items-center gap-1">
-                  <Schedule />
-                  <Typography variant="body1">
-                    {currentRestaurant.openingHours || '30-45 min'}
-                  </Typography>
-                </Box>
-                <Box className="flex items-center gap-1">
-                  <LocationOn />
-                  <Typography variant="body1">
-                    {currentRestaurant.address?.city || 'City Center'}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box className="flex gap-2">
-                <Chip
-                  label={currentRestaurant.open ? "Open Now" : "Closed"}
-                  className={currentRestaurant.open ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
-                />
-                <Chip label="Free Delivery" className="bg-blue-100 text-blue-800" />
-                <Chip label={currentRestaurant.cuisineType || "Multi Cuisine"} className="bg-purple-100 text-purple-800" />
-              </Box>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
+              <span className="text-2xl">←</span>
+            </button>
+            <div>
+              <div className="font-display font-bold mb-2 text-3xl md:text-4xl">{currentRestaurant.name}</div>
+              <div className="mb-3 text-gray-100 text-lg">{currentRestaurant.description}</div>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-1">
+                  <span className="text-yellow-300 text-lg">★</span>
+                  <span className="font-semibold">{currentRestaurant.rating || 4.5}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-lg">⏰</span>
+                  <span>{currentRestaurant.openingHours || '30-45 min'}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-lg">📍</span>
+                  <span>{currentRestaurant.address?.city || 'City Center'}</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${currentRestaurant.open ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{currentRestaurant.open ? 'Open Now' : 'Closed'}</span>
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">Free Delivery</span>
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">{currentRestaurant.cuisineType || 'Multi Cuisine'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <Container maxWidth="lg" className="py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Category Tabs */}
-        <Paper className="rounded-2xl shadow-custom mb-6">
-          <Tabs
-            value={selectedCategory}
-            onChange={(e, newValue) => setSelectedCategory(newValue)}
-            variant="scrollable"
-            scrollButtons="auto"
-            className="px-4"
-          >
-            <Tab label="All Items" />
+        <div className="rounded-2xl shadow-lg bg-white mb-6 overflow-x-auto">
+          <div className="flex space-x-2 px-4 py-2">
+            <button
+              className={`px-4 py-2 rounded-lg font-semibold text-sm ${selectedCategory === 0 ? 'bg-yellow-400 text-gray-900' : 'bg-gray-100 text-gray-700'}`}
+              onClick={() => setSelectedCategory(0)}
+            >
+              All Items
+            </button>
             {categories?.map((category, index) => (
-              <Tab key={category} label={category} />
+              <button
+                key={category}
+                className={`px-4 py-2 rounded-lg font-semibold text-sm ${selectedCategory === index + 1 ? 'bg-yellow-400 text-gray-900' : 'bg-gray-100 text-gray-700'}`}
+                onClick={() => setSelectedCategory(index + 1)}
+              >
+                {category}
+              </button>
             ))}
-          </Tabs>
-        </Paper>
+          </div>
+        </div>
 
         {/* Food Items */}
-        <Box>
-          <Typography variant="h4" className="font-display font-bold mb-6 text-gray-800">
+        <div>
+          <div className="font-display font-bold mb-6 text-gray-800 text-2xl md:text-3xl">
             {selectedCategory === 0 ? 'All Items' : categories[selectedCategory - 1]}
-          </Typography>
+          </div>
 
           {foodLoading ? (
-            <Grid container spacing={4}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {Array.from(new Array(6)).map((_, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Card className="rounded-2xl shadow-custom">
-                    <Skeleton variant="rectangular" height={200} />
-                    <CardContent>
-                      <Skeleton variant="text" height={30} />
-                      <Skeleton variant="text" height={20} width="60%" />
-                      <Skeleton variant="text" height={20} width="80%" />
-                    </CardContent>
-                  </Card>
-                </Grid>
+                <div key={index} className="rounded-2xl shadow-lg bg-white">
+                  <div className="h-52 bg-gray-200 rounded-t-2xl animate-pulse"></div>
+                  <div className="p-6">
+                    <div className="h-6 bg-gray-200 rounded w-2/3 mb-2 animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2 animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded w-4/5 animate-pulse"></div>
+                  </div>
+                </div>
               ))}
-            </Grid>
+            </div>
           ) : (
-            <Grid container spacing={4}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filteredFoods?.map((food) => (
-                <Grid item xs={12} sm={6} md={4} key={food.id}>
-                  <Card className="hover-scale shadow-custom border-0 rounded-2xl overflow-hidden">
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={food.images?.[0] || '/api/placeholder/300/200'}
-                      alt={food.name}
-                      className="object-cover"
-                    />
-                    <CardContent className="p-6">
-                      <Box className="flex justify-between items-start mb-2">
-                        <Typography variant="h6" className="font-display font-semibold text-gray-800">
-                          {food.name}
-                        </Typography>
-                        {food.vegetarian && (
-                          <Chip
-                            label="Veg"
-                            size="small"
-                            className="bg-green-100 text-green-800"
-                          />
-                        )}
-                      </Box>
-                      
-                      <Typography variant="body2" className="text-gray-600 mb-3 line-clamp-2">
-                        {food.description}
-                      </Typography>
-                      
-                      <Box className="flex items-center gap-2 mb-4">
-                        <Rating value={4.5} precision={0.5} size="small" readOnly />
-                        <Typography variant="body2" className="text-gray-600">
-                          4.5 (89 reviews)
-                        </Typography>
-                      </Box>
-                      
-                      <Box className="flex items-center justify-between">
-                        <Typography variant="h6" className="font-bold text-primary-600">
-                          ₹{food.price}
-                        </Typography>
-                        <Button
-                          onClick={() => handleAddToCart(food)}
-                          variant="contained"
-                          startIcon={<Add />}
-                          className="bg-primary-500 hover:bg-primary-600 rounded-lg font-semibold"
-                        >
-                          Add
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                <div key={food.id} className="hover:scale-[1.01] transition-transform shadow-lg border-0 rounded-2xl overflow-hidden bg-white">
+                  <img
+                    src={food.images?.[0] || '/api/placeholder/300/200'}
+                    alt={food.name}
+                    className="object-cover w-full h-52"
+                  />
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="font-display font-semibold text-gray-800 text-lg">{food.name}</div>
+                      {food.vegetarian && (
+                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Veg</span>
+                      )}
+                    </div>
+                    <div className="text-gray-600 mb-3 text-sm line-clamp-2">{food.description}</div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-yellow-400 text-base">★</span>
+                      <span className="text-gray-600 text-sm">4.5 (89 reviews)</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-yellow-500 text-lg">₹{food.price}</div>
+                      <button
+                        onClick={() => handleAddToCart(food)}
+                        className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-4 py-2 font-semibold flex items-center gap-2"
+                      >
+                        <span className="text-xl">＋</span> Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Grid>
+            </div>
           )}
 
           {!foodLoading && filteredFoods?.length === 0 && (
-            <Box className="text-center py-16">
-              <Typography variant="h5" className="text-gray-600 mb-4">
-                No items found in this category
-              </Typography>
-              <Typography variant="body1" className="text-gray-500">
-                Try selecting a different category
-              </Typography>
-            </Box>
+            <div className="text-center py-16">
+              <div className="text-gray-600 mb-4 text-2xl">No items found in this category</div>
+              <div className="text-gray-500">Try selecting a different category</div>
+            </div>
           )}
-        </Box>
-      </Container>
+        </div>
+      </div>
     </div>
   );
 };

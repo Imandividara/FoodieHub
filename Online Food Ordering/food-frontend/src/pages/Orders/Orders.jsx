@@ -1,27 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Paper,
-  Grid,
-  Button,
-  Avatar,
-  Skeleton,
-} from '@mui/material';
-import {
-  Receipt,
-  Schedule,
-  LocalShipping,
-  CheckCircle,
-  Cancel,
-  Pending,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { getUserOrders } from '../../redux/orderSlice';
 
 const Orders = () => {
@@ -42,15 +22,15 @@ const Orders = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'COMPLETED':
-        return <CheckCircle className="text-green-500" />;
+        return <span className="text-green-500 text-xl">✔️</span>;
       case 'PENDING':
-        return <Pending className="text-yellow-500" />;
+        return <span className="text-yellow-500 text-xl">⏳</span>;
       case 'OUT_FOR_DELIVERY':
-        return <LocalShipping className="text-blue-500" />;
+        return <span className="text-blue-500 text-xl">🚚</span>;
       case 'CANCELLED':
-        return <Cancel className="text-red-500" />;
+        return <span className="text-red-500 text-xl">❌</span>;
       default:
-        return <Schedule className="text-gray-500" />;
+        return <span className="text-gray-500 text-xl">🕒</span>;
     }
   };
 
@@ -75,160 +55,120 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <Container maxWidth="lg">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <Box className="mb-8">
-          <Typography
-            variant="h3"
-            className="font-display font-bold mb-4 text-gray-800"
-          >
-            Your <span className="text-gradient">Orders</span>
-          </Typography>
-          <Typography variant="h6" className="text-gray-600">
-            Track and manage your food orders
-          </Typography>
-        </Box>
+        <div className="mb-8">
+          <h2 className="font-display font-bold mb-4 text-gray-800 text-3xl md:text-4xl">
+            Your <span className="text-yellow-400">Orders</span>
+          </h2>
+          <div className="text-gray-600 text-lg">Track and manage your food orders</div>
+        </div>
 
         {loading ? (
-          <Box className="space-y-6">
+          <div className="space-y-6">
             {Array.from(new Array(3)).map((_, index) => (
-              <Card key={index} className="rounded-2xl shadow-custom">
-                <CardContent className="p-6">
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} md={8}>
-                      <Skeleton variant="text" height={30} width="60%" />
-                      <Skeleton variant="text" height={20} width="40%" className="mt-2" />
-                      <Skeleton variant="text" height={20} width="80%" className="mt-4" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                      <Skeleton variant="rectangular" height={100} className="rounded-lg" />
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
+              <div key={index} className="rounded-2xl shadow-lg bg-white p-6 animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/2 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
+                <div className="h-24 bg-gray-200 rounded-lg"></div>
+              </div>
             ))}
-          </Box>
+          </div>
         ) : orders?.length === 0 ? (
-          <Paper className="p-12 rounded-2xl shadow-custom text-center">
-            <Receipt sx={{ fontSize: 64 }} className="text-gray-400 mb-4" />
-            <Typography variant="h5" className="font-display font-semibold mb-4 text-gray-800">
-              No Orders Yet
-            </Typography>
-            <Typography variant="body1" className="text-gray-600 mb-6">
-              You haven't placed any orders yet. Start exploring restaurants!
-            </Typography>
-            <Button
+          <div className="p-12 rounded-2xl shadow-lg bg-white text-center">
+            <div className="flex justify-center mb-4">
+              <span className="text-gray-400 text-6xl">🧾</span>
+            </div>
+            <div className="font-display font-semibold mb-4 text-gray-800 text-2xl">No Orders Yet</div>
+            <div className="text-gray-600 mb-6">You haven't placed any orders yet. Start exploring restaurants!</div>
+            <button
               onClick={() => navigate('/restaurants')}
-              variant="contained"
-              className="bg-primary-500 hover:bg-primary-600 rounded-lg px-6"
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-6 py-2 font-semibold"
             >
               Browse Restaurants
-            </Button>
-          </Paper>
+            </button>
+          </div>
         ) : (
-          <Box className="space-y-6">
+          <div className="space-y-6">
             {orders.map((order) => (
-              <Card key={order.id} className="rounded-2xl shadow-custom hover-scale">
-                <CardContent className="p-6">
-                  <Grid container spacing={4}>
-                    <Grid item xs={12} md={8}>
-                      <Box className="flex items-center justify-between mb-4">
-                        <Typography variant="h6" className="font-display font-semibold text-gray-800">
-                          Order #{order.id}
-                        </Typography>
-                        <Box className="flex items-center gap-2">
-                          {getStatusIcon(order.orderStatus)}
-                          <Chip
-                            label={order.orderStatus?.replace('_', ' ') || 'PENDING'}
-                            className={getStatusColor(order.orderStatus)}
+              <div key={order.id} className="rounded-2xl shadow-lg bg-white hover:scale-[1.01] transition-transform p-6">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                  <div className="md:col-span-8">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="font-display font-semibold text-gray-800 text-lg">Order #{order.id}</div>
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(order.orderStatus)}
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.orderStatus)}`}>
+                          {order.orderStatus?.replace('_', ' ') || 'PENDING'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="text-gray-600 text-sm mb-2">
+                      Ordered on {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+
+                    <div className="text-gray-600 text-sm mb-4">{order.restaurant?.name}</div>
+
+                    <div className="space-y-2 mb-4">
+                      {order.items?.slice(0, 3).map((item, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <img
+                            src={item.food?.images?.[0] || '/api/placeholder/40/40'}
+                            alt={item.food?.name}
+                            className="rounded-lg w-8 h-8 object-cover"
                           />
-                        </Box>
-                      </Box>
+                          <span className="text-gray-700 text-sm">{item.food?.name} x {item.quantity}</span>
+                        </div>
+                      ))}
+                      {order.items?.length > 3 && (
+                        <span className="text-gray-500 ml-11 text-xs">+{order.items.length - 3} more items</span>
+                      )}
+                    </div>
 
-                      <Typography variant="body2" className="text-gray-600 mb-2">
-                        Ordered on {new Date(order.createdAt).toLocaleDateString('en-IN', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </Typography>
+                    <div className="flex items-center gap-4">
+                      <div className="font-bold text-yellow-500 text-lg">₹{order.totalAmount?.toFixed(2)}</div>
+                      <div className="text-gray-600 text-sm">{order.items?.length} items</div>
+                    </div>
+                  </div>
 
-                      <Typography variant="body2" className="text-gray-600 mb-4">
-                        {order.restaurant?.name}
-                      </Typography>
+                  <div className="md:col-span-4 flex flex-col gap-3 h-full justify-between">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="font-semibold text-gray-800 mb-2 text-sm">Delivery Address</div>
+                      <div className="text-gray-600 text-sm">
+                        {order.deliveryAddress?.streetAddress}<br />
+                        {order.deliveryAddress?.city}, {order.deliveryAddress?.postalCode}
+                      </div>
+                    </div>
 
-                      <Box className="space-y-2 mb-4">
-                        {order.items?.slice(0, 3).map((item, index) => (
-                          <Box key={index} className="flex items-center gap-3">
-                            <Avatar
-                              src={item.food?.images?.[0] || '/api/placeholder/40/40'}
-                              alt={item.food?.name}
-                              sx={{ width: 32, height: 32 }}
-                              className="rounded-lg"
-                            />
-                            <Typography variant="body2" className="text-gray-700">
-                              {item.food?.name} x {item.quantity}
-                            </Typography>
-                          </Box>
-                        ))}
-                        {order.items?.length > 3 && (
-                          <Typography variant="body2" className="text-gray-500 ml-11">
-                            +{order.items.length - 3} more items
-                          </Typography>
-                        )}
-                      </Box>
-
-                      <Box className="flex items-center gap-4">
-                        <Typography variant="h6" className="font-bold text-primary-600">
-                          ₹{order.totalAmount?.toFixed(2)}
-                        </Typography>
-                        <Typography variant="body2" className="text-gray-600">
-                          {order.items?.length} items
-                        </Typography>
-                      </Box>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <Box className="flex flex-col gap-3 h-full justify-between">
-                        <Box className="bg-gray-50 rounded-lg p-4">
-                          <Typography variant="body2" className="font-semibold text-gray-800 mb-2">
-                            Delivery Address
-                          </Typography>
-                          <Typography variant="body2" className="text-gray-600">
-                            {order.deliveryAddress?.streetAddress}<br />
-                            {order.deliveryAddress?.city}, {order.deliveryAddress?.postalCode}
-                          </Typography>
-                        </Box>
-
-                        <Box className="flex gap-2">
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            className="border-primary-500 text-primary-600 hover:bg-primary-50 rounded-lg flex-1"
-                          >
-                            View Details
-                          </Button>
-                          {order.orderStatus === 'COMPLETED' && (
-                            <Button
-                              variant="contained"
-                              size="small"
-                              className="bg-primary-500 hover:bg-primary-600 rounded-lg flex-1"
-                            >
-                              Reorder
-                            </Button>
-                          )}
-                        </Box>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        className="border border-yellow-400 text-yellow-500 hover:bg-yellow-50 rounded-lg flex-1 px-4 py-2 font-semibold text-sm"
+                      >
+                        View Details
+                      </button>
+                      {order.orderStatus === 'COMPLETED' && (
+                        <button
+                          className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg flex-1 px-4 py-2 font-semibold text-sm"
+                        >
+                          Reorder
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
-          </Box>
+          </div>
         )}
-      </Container>
+      </div>
     </div>
   );
 };

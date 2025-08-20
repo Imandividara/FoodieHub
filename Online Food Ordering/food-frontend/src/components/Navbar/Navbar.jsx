@@ -1,44 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-  IconButton,
-  Badge,
-  TextField,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  Avatar,
-  useTheme,
-  useMediaQuery,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-} from '@mui/material';
-import {
-  Search as SearchIcon,
-  ShoppingCart as CartIcon,
-  Person as PersonIcon,
-  Menu as MenuIcon,
-  Home,
-  Restaurant,
-  Receipt,
-  ExitToApp,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { logout } from '../../redux/authSlice';
 import { getCart } from '../../redux/cartSlice';
 
 const Navbar = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
@@ -79,213 +52,118 @@ const Navbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
 
+  // Mobile drawer content using Tailwind
   const mobileDrawerContent = (
-    <Box sx={{ width: 250 }} role="presentation">
-      <Box sx={{ p: 2, bgcolor: 'secondary.700', color: 'white' }}>
-        <Typography variant="h6" className="font-display">
-          FoodieHub
-        </Typography>
-      </Box>
-      <List>
-        <ListItem button component={Link} to="/" onClick={() => setMobileDrawerOpen(false)}>
-          <ListItemIcon><Home /></ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button component={Link} to="/restaurants" onClick={() => setMobileDrawerOpen(false)}>
-          <ListItemIcon><Restaurant /></ListItemIcon>
-          <ListItemText primary="Restaurants" />
-        </ListItem>
-        {isAuthenticated && (
-          <>
-            <ListItem button component={Link} to="/cart" onClick={() => setMobileDrawerOpen(false)}>
-              <ListItemIcon>
-                <Badge badgeContent={totalItems} color="error">
-                  <CartIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Cart" />
-            </ListItem>
-            <ListItem button component={Link} to="/orders" onClick={() => setMobileDrawerOpen(false)}>
-              <ListItemIcon><Receipt /></ListItemIcon>
-              <ListItemText primary="Orders" />
-            </ListItem>
-            <ListItem button component={Link} to="/profile" onClick={() => setMobileDrawerOpen(false)}>
-              <ListItemIcon><PersonIcon /></ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <Divider />
-            <ListItem button onClick={() => { handleLogout(); setMobileDrawerOpen(false); }}>
-              <ListItemIcon><ExitToApp /></ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </>
-        )}
-        {!isAuthenticated && (
-          <>
-            <Divider />
-            <ListItem button component={Link} to="/login" onClick={() => setMobileDrawerOpen(false)}>
-              <ListItemIcon><PersonIcon /></ListItemIcon>
-              <ListItemText primary="Login" />
-            </ListItem>
-          </>
-        )}
-      </List>
-    </Box>
+    <div className="w-64 bg-gray-900 text-white h-full flex flex-col">
+      <div className="p-4 font-display text-xl font-bold border-b border-gray-800">FoodieHub</div>
+      <nav className="flex-1 p-4 space-y-2">
+        <Link to="/" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+          <span>🏠</span> Home
+        </Link>
+        <Link to="/restaurants" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+          <span>🍽️</span> Restaurants
+        </Link>
+        {isAuthenticated && <>
+          <Link to="/cart" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+            <span>🛒</span> Cart
+            {totalItems > 0 && <span className="ml-auto bg-red-500 text-xs rounded-full px-2 py-0.5">{totalItems}</span>}
+          </Link>
+          <Link to="/orders" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+            <span>📦</span> Orders
+          </Link>
+          <Link to="/profile" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+            <span>👤</span> Profile
+          </Link>
+          <button onClick={() => { handleLogout(); setMobileDrawerOpen(false); }} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800 w-full text-left">
+            <span>🚪</span> Logout
+          </button>
+        </>}
+        {!isAuthenticated && <>
+          <Link to="/login" onClick={() => setMobileDrawerOpen(false)} className="flex items-center gap-2 py-2 px-3 rounded hover:bg-gray-800">
+            <span>👤</span> Login
+          </Link>
+        </>}
+      </nav>
+    </div>
   );
 
   return (
     <>
-      <AppBar position="sticky" className="glass-effect shadow-custom" elevation={0}  sx={{
-          background: 'linear-gradient(to right, #000000, #030712)', // Green (secondary-800) to black (gray-950) mix
-        }}>
-        <Toolbar className="max-w-7xl mx-auto w-full px-4">
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-black to-gray-900 shadow-lg">
+        <div className="max-w-7xl mx-auto flex items-center px-4 py-3">
           {isMobile && (
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
+            <button
+              className="mr-3 text-white focus:outline-none"
               onClick={handleMobileDrawerToggle}
-              sx={{ mr: 2 }}
+              aria-label="Open menu"
             >
-              <MenuIcon />
-            </IconButton>
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
           )}
-          
-          <Typography
-            variant="h5"
-            component={Link}
-            to="/"
-            className="font-display text-gradient font-bold no-underline flex-shrink-0"
-            sx={{ textDecoration: 'none', mr: 3, color: '#4ade80' }}
-          >
-            FoodieHub
-          </Typography>
-
+          <Link to="/" className="font-display text-gradient font-bold text-2xl no-underline flex-shrink-0 text-yellow-400 mr-6">FoodieHub</Link>
           {!isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mr: 'auto' }}>
-              <Button
-                component={Link}
-                to="/"
-                color="inherit"
-                className="hover:bg-gray-100 rounded-lg px-4 py-2 transition-colors"
-              >
-                Home
-              </Button>
-              <Button
-                component={Link}
-                to="/restaurants"
-                color="inherit"
-                className="hover:bg-gray-100 text-secondary-400 rounded-lg px-4 py-2 transition-colors"
-              >
-                Restaurants
-              </Button>
-            </Box>
+            <div className="flex items-center gap-6 mr-auto">
+              <Link to="/" className="hover:bg-gray-800 rounded-lg px-4 py-2 transition-colors text-white">Home</Link>
+              <Link to="/restaurants" className="hover:bg-gray-800 text-yellow-400 rounded-lg px-4 py-2 transition-colors">Restaurants</Link>
+            </div>
           )}
-
-          <Box sx={{ flexGrow: 1, maxWidth: 400, mx: 2 }}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Search restaurants, cuisines..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleSearch}
-              size="small"
-              className="bg-white rounded-lg"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon color="action" />
-                  </InputAdornment>
-                ),
-                style: { borderRadius: '12px' }
-              }}
-            />
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div className="flex-1 max-w-md mx-4">
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-2-2" /></svg>
+              </span>
+              <input
+                type="text"
+                placeholder="Search restaurants, cuisines..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleSearch}
+                className="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:outline-none bg-white text-gray-900"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
             {isAuthenticated && (
-              <IconButton
-                component={Link}
-                to="/cart"
-                color="inherit"
-                className="hover:bg-gray-100 rounded-lg p-2 transition-colors"
-              >
-                <Badge badgeContent={totalItems} color="error">
-                  <CartIcon className='text-secondary-400' />
-                </Badge>
-              </IconButton>
+              <Link to="/cart" className="relative hover:bg-gray-800 rounded-lg p-2 transition-colors">
+                <span role="img" aria-label="cart" className="text-xl">🛒</span>
+                {totalItems > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full px-1.5 py-0.5 text-white">{totalItems}</span>}
+              </Link>
             )}
-
             {isAuthenticated ? (
-              <>
-                <IconButton
+              <div className="relative group ml-2">
+                <button
                   onClick={handleProfileMenuOpen}
-                  color="inherit"
-                  className="hover:bg-gray-100 bg-secondary-400 rounded-lg p-1 transition-colors ml-2"
+                  className="hover:bg-yellow-400 bg-yellow-500 rounded-full w-9 h-9 flex items-center justify-center text-gray-900 font-bold focus:outline-none"
                 >
-                  <Avatar
-                    sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}
-                    className="text-sm"
-                  >
-                    {user?.fullName?.charAt(0) || 'U'}
-                  </Avatar>
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleProfileMenuClose}
-                  PaperProps={{
-                    className: 'mt-2 shadow-custom rounded-lg'
-                  }}
-                >
-                  <MenuItem component={Link} to="/profile" onClick={handleProfileMenuClose}>
-                    <PersonIcon sx={{ mr: 1 }} /> Profile
-                  </MenuItem>
-                  <MenuItem component={Link} to="/orders" onClick={handleProfileMenuClose}>
-                    <Receipt sx={{ mr: 1 }} /> Orders
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>
-                    <ExitToApp sx={{ mr: 1 }} /> Logout
-                  </MenuItem>
-                </Menu>
-              </>
+                  {user?.fullName?.charAt(0) || 'U'}
+                </button>
+                {anchorEl && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-50">
+                    <Link to="/profile" onClick={handleProfileMenuClose} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
+                    <Link to="/orders" onClick={handleProfileMenuClose} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Orders</Link>
+                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                  </div>
+                )}
+              </div>
             ) : (
               !isMobile && (
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Button
-                    component={Link}
-                    to="/login"
-                    variant="outlined"
-                    className="rounded-lg px-4 py-2 border-primary-500 text-primary-600 hover:bg-primary-50"
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    component={Link}
-                    to="/register"
-                    variant="contained"
-                    className="rounded-lg px-4 py-2 bg-primary-500 hover:bg-primary-600"
-                  >
-                    Sign Up
-                  </Button>
-                </Box>
+                <div className="flex gap-2">
+                  <Link to="/login" className="rounded-lg px-4 py-2 border border-yellow-400 text-yellow-500 hover:bg-yellow-50">Login</Link>
+                  <Link to="/register" className="rounded-lg px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900">Sign Up</Link>
+                </div>
               )
             )}
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        anchor="left"
-        open={mobileDrawerOpen}
-        onClose={handleMobileDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
-        {mobileDrawerContent}
-      </Drawer>
+          </div>
+        </div>
+      </nav>
+      {/* Mobile Drawer */}
+      {isMobile && mobileDrawerOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40" onClick={handleMobileDrawerToggle}>
+          <div className="fixed left-0 top-0 h-full z-50" onClick={e => e.stopPropagation()}>
+            {mobileDrawerContent}
+          </div>
+        </div>
+      )}
     </>
   );
 };

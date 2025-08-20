@@ -1,29 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  TextField,
-  Button,
-  Avatar,
-  Paper,
-  Divider,
-  IconButton,
-} from '@mui/material';
-import {
-  Person,
-  Email,
-  Phone,
-  LocationOn,
-  Edit,
-  Save,
-  Cancel,
-} from '@mui/icons-material';
+// Removed Material UI and icons. Use only Tailwind CSS and React components.
 import { setUser } from '../../redux/authSlice';
 import { getUserOrders } from '../../redux/orderSlice';
 import toast from 'react-hot-toast';
@@ -99,263 +77,200 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <Container maxWidth="lg">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <Box className="mb-8">
-          <Typography
-            variant="h3"
-            className="font-display font-bold mb-4 text-gray-800"
-          >
-            My <span className="text-gradient">Profile</span>
-          </Typography>
-          <Typography variant="h6" className="text-gray-600">
-            Manage your account and view order history
-          </Typography>
-        </Box>
+        <div className="mb-8">
+          <h2 className="font-display font-bold mb-4 text-gray-800 text-3xl md:text-4xl">
+            My <span className="text-yellow-400">Profile</span>
+          </h2>
+          <p className="text-gray-600 text-lg">Manage your account and view order history</p>
+        </div>
 
-        <Grid container spacing={4}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile Information */}
-          <Grid item xs={12} md={8}>
-            <Paper className="rounded-2xl shadow-custom p-6 mb-6">
-              <Box className="flex items-center justify-between mb-6">
-                <Typography variant="h5" className="font-display font-semibold text-gray-800">
-                  Profile Information
-                </Typography>
+          <div className="md:col-span-2">
+            <div className="rounded-2xl shadow-lg bg-white p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-display font-semibold text-gray-800 text-xl">Profile Information</h3>
                 {!isEditing ? (
-                  <IconButton
+                  <button
                     onClick={() => setIsEditing(true)}
-                    className="bg-primary-50 text-primary-600 hover:bg-primary-100"
+                    className="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 rounded-full p-2"
+                    title="Edit"
                   >
-                    <Edit />
-                  </IconButton>
+                    ✏️
+                  </button>
                 ) : (
-                  <Box className="flex gap-2">
-                    <IconButton
+                  <div className="flex gap-2">
+                    <button
                       onClick={handleSave}
-                      className="bg-green-50 text-green-600 hover:bg-green-100"
+                      className="bg-green-100 text-green-700 hover:bg-green-200 rounded-full p-2"
+                      title="Save"
                     >
-                      <Save />
-                    </IconButton>
-                    <IconButton
+                      💾
+                    </button>
+                    <button
                       onClick={handleCancel}
-                      className="bg-red-50 text-red-600 hover:bg-red-100"
+                      className="bg-red-100 text-red-700 hover:bg-red-200 rounded-full p-2"
+                      title="Cancel"
                     >
-                      <Cancel />
-                    </IconButton>
-                  </Box>
+                      ❌
+                    </button>
+                  </div>
                 )}
-              </Box>
+              </div>
 
-              <Grid container spacing={4}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    name="fullName"
-                    value={profileData.fullName}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
-                    InputProps={{
-                      startAdornment: <Person className="text-gray-400 mr-2" />
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    name="email"
-                    value={profileData.email}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
-                    InputProps={{
-                      startAdornment: <Email className="text-gray-400 mr-2" />
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Phone Number"
-                    name="phone"
-                    value={profileData.phone}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
-                    InputProps={{
-                      startAdornment: <Phone className="text-gray-400 mr-2" />
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Address"
-                    name="address"
-                    value={profileData.address}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    variant="outlined"
-                    className="bg-white rounded-lg"
-                    InputProps={{
-                      startAdornment: <LocationOn className="text-gray-400 mr-2" />
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Paper>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Full Name</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={profileData.fullName}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:bg-gray-100"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Email</label>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      name="email"
+                      value={profileData.email}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:bg-gray-100"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Phone Number</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="phone"
+                      value={profileData.phone}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:bg-gray-100"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Address</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="address"
+                      value={profileData.address}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      className="w-full rounded-lg border border-gray-300 py-2 px-4 bg-white text-gray-900 focus:ring-2 focus:ring-yellow-400 focus:outline-none disabled:bg-gray-100"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Recent Orders */}
-            <Paper className="rounded-2xl shadow-custom p-6">
-              <Box className="flex items-center justify-between mb-6">
-                <Typography variant="h5" className="font-display font-semibold text-gray-800">
-                  Recent Orders
-                </Typography>
-                <Button
+            <div className="rounded-2xl shadow-lg bg-white p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-display font-semibold text-gray-800 text-xl">Recent Orders</h3>
+                <button
                   onClick={() => navigate('/orders')}
-                  variant="outlined"
-                  className="border-primary-500 text-primary-600 hover:bg-primary-50 rounded-lg"
+                  className="border border-yellow-400 text-yellow-500 hover:bg-yellow-50 rounded-lg px-4 py-2 font-semibold"
                 >
                   View All
-                </Button>
-              </Box>
-
+                </button>
+              </div>
               {recentOrders.length === 0 ? (
-                <Box className="text-center py-8">
-                  <Typography variant="body1" className="text-gray-600 mb-4">
-                    No orders yet
-                  </Typography>
-                  <Button
+                <div className="text-center py-8">
+                  <p className="text-gray-600 mb-4">No orders yet</p>
+                  <button
                     onClick={() => navigate('/restaurants')}
-                    variant="contained"
-                    className="bg-primary-500 hover:bg-primary-600 rounded-lg"
+                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-lg px-6 py-2 font-semibold"
                   >
                     Start Ordering
-                  </Button>
-                </Box>
+                  </button>
+                </div>
               ) : (
-                <Box className="space-y-4">
+                <div className="space-y-4">
                   {recentOrders.map((order) => (
-                    <Card key={order.id} className="border border-gray-200 rounded-xl">
-                      <CardContent className="p-4">
-                        <Box className="flex items-center justify-between">
-                          <Box>
-                            <Typography variant="h6" className="font-semibold text-gray-800 mb-1">
-                              Order #{order.id}
-                            </Typography>
-                            <Typography variant="body2" className="text-gray-600 mb-2">
-                              {order.restaurant?.name}
-                            </Typography>
-                            <Typography variant="body2" className="text-gray-500">
-                              {new Date(order.createdAt).toLocaleDateString()}
-                            </Typography>
-                          </Box>
-                          <Box className="text-right">
-                            <Typography variant="h6" className="font-bold text-primary-600 mb-1">
-                              ₹{order.totalAmount?.toFixed(2)}
-                            </Typography>
-                            <Typography variant="body2" className="text-gray-600">
-                              {order.items?.length} items
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </CardContent>
-                    </Card>
+                    <div key={order.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-semibold text-gray-800 mb-1">Order #{order.id}</div>
+                          <div className="text-gray-600 mb-2 text-sm">{order.restaurant?.name}</div>
+                          <div className="text-gray-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold text-yellow-500 mb-1">₹{order.totalAmount?.toFixed(2)}</div>
+                          <div className="text-gray-600 text-sm">{order.items?.length} items</div>
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                </Box>
+                </div>
               )}
-            </Paper>
-          </Grid>
+            </div>
+          </div>
 
-          {/* Profile Stats */}
-          <Grid item xs={12} md={4}>
-            <Paper className="rounded-2xl shadow-custom p-6 mb-6">
-              <Box className="text-center mb-6">
-                <Avatar
-                  sx={{ width: 80, height: 80 }}
-                  className="mx-auto mb-4 bg-primary-500"
-                >
+          {/* Profile Stats & Quick Actions */}
+          <div>
+            <div className="rounded-2xl shadow-lg bg-white p-6 mb-6">
+              <div className="text-center mb-6">
+                <div className="mx-auto mb-4 bg-yellow-400 text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold">
                   {user?.fullName?.charAt(0) || 'U'}
-                </Avatar>
-                <Typography variant="h5" className="font-display font-semibold text-gray-800 mb-2">
-                  {user?.fullName || 'User'}
-                </Typography>
-                <Typography variant="body2" className="text-gray-600">
-                  {user?.email}
-                </Typography>
-              </Box>
-
-              <Divider className="my-4" />
-
-              <Box className="space-y-4">
-                <Box className="text-center">
-                  <Typography variant="h4" className="font-bold text-primary-600 mb-1">
-                    {totalOrders}
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    Total Orders
-                  </Typography>
-                </Box>
-                
-                <Box className="text-center">
-                  <Typography variant="h4" className="font-bold text-primary-600 mb-1">
-                    ₹{totalSpent.toFixed(0)}
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    Total Spent
-                  </Typography>
-                </Box>
-                
-                <Box className="text-center">
-                  <Typography variant="h4" className="font-bold text-primary-600 mb-1">
-                    {user?.role === 'ROLE_CUSTOMER' ? 'Customer' : 'Restaurant Owner'}
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    Account Type
-                  </Typography>
-                </Box>
-              </Box>
-            </Paper>
-
+                </div>
+                <div className="font-display font-semibold text-gray-800 mb-2 text-xl">{user?.fullName || 'User'}</div>
+                <div className="text-gray-600 text-sm">{user?.email}</div>
+              </div>
+              <div className="border-t border-gray-200 my-4"></div>
+              <div className="space-y-4">
+                <div className="text-center">
+                  <div className="font-bold text-yellow-500 text-2xl mb-1">{totalOrders}</div>
+                  <div className="text-gray-600 text-sm">Total Orders</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-bold text-yellow-500 text-2xl mb-1">₹{totalSpent.toFixed(0)}</div>
+                  <div className="text-gray-600 text-sm">Total Spent</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-bold text-yellow-500 text-2xl mb-1">{user?.role === 'ROLE_CUSTOMER' ? 'Customer' : 'Restaurant Owner'}</div>
+                  <div className="text-gray-600 text-sm">Account Type</div>
+                </div>
+              </div>
+            </div>
             {/* Quick Actions */}
-            <Paper className="rounded-2xl shadow-custom p-6">
-              <Typography variant="h6" className="font-display font-semibold mb-4 text-gray-800">
-                Quick Actions
-              </Typography>
-              <Box className="space-y-3">
-                <Button
-                  fullWidth
-                  variant="outlined"
+            <div className="rounded-2xl shadow-lg bg-white p-6">
+              <div className="font-display font-semibold mb-4 text-gray-800 text-lg">Quick Actions</div>
+              <div className="space-y-3">
+                <button
                   onClick={() => navigate('/orders')}
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg justify-start"
+                  className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg px-4 py-2 font-semibold text-left"
                 >
                   View All Orders
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
+                </button>
+                <button
                   onClick={() => navigate('/restaurants')}
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg justify-start"
+                  className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg px-4 py-2 font-semibold text-left"
                 >
                   Browse Restaurants
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg justify-start"
+                </button>
+                <button
+                  className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg px-4 py-2 font-semibold text-left"
                 >
                   Help & Support
-                </Button>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
